@@ -8,6 +8,7 @@ public class LoginScreenPresenter : MonoBehaviour
 {
     [Header("Services")]
     [SerializeField] private PlayFabAuthService _authService;
+    [SerializeField] private BackendApiClient _backendApiClient;
 
     [Header("Inputs")]
     [SerializeField] private TMP_InputField _emailInput;
@@ -55,6 +56,13 @@ public class LoginScreenPresenter : MonoBehaviour
         try
         {
             AuthSession session = await authAction();
+
+            SetStatus("Saving player to backend...");
+
+            await _backendApiClient.UpsertPlayerAsync(
+                session.PlayFabId,
+                session.DisplayName
+            );
 
             SetStatus($"Logged in as {session.DisplayName}");
 
