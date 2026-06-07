@@ -21,6 +21,7 @@ public class LoginScreenPresenter : MonoBehaviour
 
     [Header("Status")]
     [SerializeField] private TextMeshProUGUI _statusText;
+    [SerializeField] private PlayFabEconomyService _economyService;
 
     [Header("Panels")]
     [SerializeField] private GameObject _loginPanel;
@@ -63,6 +64,13 @@ public class LoginScreenPresenter : MonoBehaviour
                 session.PlayFabId,
                 session.DisplayName
             );
+
+            SetStatus("Loading Gold balance...");
+
+            if (_economyService != null)
+            {
+                await _economyService.RefreshGoldAsync();
+            }
 
             SetStatus($"Logged in as {session.DisplayName}");
 

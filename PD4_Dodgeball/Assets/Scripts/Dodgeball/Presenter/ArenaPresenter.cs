@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using UnityEngine;
+using Unity.Netcode;
 
 namespace Dodgeball.Presenter
 {
@@ -19,7 +20,13 @@ namespace Dodgeball.Presenter
 		[SerializeField]
 		private GameObject _ballPrefab;
 
-		private List<PlayerPresenter> _spawnedPlayers = new List<PlayerPresenter>();
+        [SerializeField]
+        private NetworkObject _networkPlayerPrefab;
+
+        [SerializeField]
+        private NetworkObject _networkBallPrefab;
+
+        private List<PlayerPresenter> _spawnedPlayers = new List<PlayerPresenter>();
 		private List<BallPresenter> _spawnedBalls = new List<BallPresenter>();
 
 		public ReadOnlyCollection<PlayerPresenter> SpawnedPlayers => _spawnedPlayers.AsReadOnly();
@@ -67,7 +74,69 @@ namespace Dodgeball.Presenter
 			playerPresenter.PlayerId = playerId; //TODO: remove this line, will be replaced by networked playerId
 		}
 
-		public void AddPlayerPresenter(PlayerPresenter presenter)
+        public void SpawnNetworkBall(int spawnLocationIndex)
+        {
+            if (!NetworkManager.Singleton.IsServer)
+            {
+                return;
+            }
+
+            if (spawnLocationIndex == -1)
+            {
+                spawnLocationIndex = Random.Range(0, _ballSpawnLocations.Count);
+            }
+
+            Transform spawnLocation = _ballSpawnLocations[spawnLocationIndex];
+
+            NetworkObject ball = Instantiate(
+                _networkBallPrefab,
+                spawnLocation.position,
+                Quaternion.identity
+            );
+
+            ball.Spawn();
+        }
+
+        public void SpawnNetworkPlayer(ulong playerId)
+        {
+            if (!NetworkManager.Singleton.IsServer)
+            {
+                return;
+            }
+
+            PlayerModel model = Model.GetPlayer(playerId);
+
+            if (model == null)
+            {
+                Debug.LogError($"Cannot spawn network player. No PlayerModel for {playerId}");
+                return;
+            }
+
+            var spawnLocation = GetRandomPlayerSpawn(model.Color);
+
+            NetworkObject playerObject = Instantiate(
+                _networkPlayerPrefab,
+                spawnLocation.pos,
+                spawnLocation.rot
+            );
+
+            NetworkPlayerAvatar avatar = playerObject.GetComponent<NetworkPlayerAvatar>();
+
+            if (avatar == null)
+            {
+                Debug.LogError("Network player prefab is missing NetworkPlayerAvatar.");
+                Destroy(playerObject.gameObject);
+                return;
+            }
+
+            avatar.SetPlayerDataOnServer(playerId, (int)model.Color);
+
+            playerObject.SpawnWithOwnership(playerId);
+
+            Debug.Log($"Spawned network player for ClientId={playerId}, Color={model.Color}");
+        }
+
+        public void AddPlayerPresenter(PlayerPresenter presenter)
 		{
 			//Don't add model to ArenaModel. Model already exists in Arena Model at this point (created by game)
 			_spawnedPlayers.Add(presenter);

@@ -11,8 +11,8 @@ namespace Dodgeball.Model.GameStates
 		public override void OnEnter()
 		{
 			base.OnEnter();
-			GameModel.TeamSelection = new SelectTeamModel();
-			GameModel.TeamSelection.ReadinessChanged += TeamSelection_ReadinessChanged;
+            GameModel.TeamSelection = GameModel.TeamSelectionFactory();
+            GameModel.TeamSelection.ReadinessChanged += TeamSelection_ReadinessChanged;
 		}
 
 		private void TeamSelection_ReadinessChanged(object sender, System.EventArgs e)
@@ -22,5 +22,15 @@ namespace Dodgeball.Model.GameStates
 				FSM.TransitionTo(FSM.CountdownState);
 			}
 		}
-	}
+
+        public override void OnExit()
+        {
+            if (GameModel.TeamSelection != null)
+            {
+                GameModel.TeamSelection.ReadinessChanged -= TeamSelection_ReadinessChanged;
+            }
+
+            base.OnExit();
+        }
+    }
 }

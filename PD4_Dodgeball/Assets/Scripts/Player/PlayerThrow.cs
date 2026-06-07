@@ -15,7 +15,12 @@ namespace Dodgeball.Presenter
 		[SerializeField]
 		private float _throwSpeed = 10f;
 
-		private PlayerPresenter _playerPresenter;
+
+        public Transform AimTransform => _aimTransform;
+        public Transform GrabPivot => _grabPivot;
+        public float ThrowSpeed => _throwSpeed;
+
+        private PlayerPresenter _playerPresenter;
 		private IBallThrowingStrategy _throwingStrategy;
 
 		public IBallThrowingStrategy ThrowingStrategy
@@ -119,22 +124,29 @@ namespace Dodgeball.Presenter
 			return _grabPivot.transform.position;
 		}
 
-		// Triggers
-		void OnTriggerEnter(Collider other)
-		{
-			if (!other.CompareTag("Ball")) return;
+        // Triggers
+        void OnTriggerEnter(Collider other)
+        {
+            if (!isActiveAndEnabled) return;
+            if (Model == null) return;
+            if (!other.CompareTag("Ball")) return;
 
-			BallPresenter ball = other.GetComponent<BallPresenter>();
-			Model.SetBallInGrabRange(ball.Model, true);
+            BallPresenter ball = other.GetComponent<BallPresenter>();
+            if (ball == null || ball.Model == null) return;
 
-		}
+            Model.SetBallInGrabRange(ball.Model, true);
+        }
 
-		private void OnTriggerExit(Collider other)
-		{
-			if (!other.CompareTag("Ball")) return;
+        private void OnTriggerExit(Collider other)
+        {
+            if (!isActiveAndEnabled) return;
+            if (Model == null) return;
+            if (!other.CompareTag("Ball")) return;
 
-			BallPresenter ball = other.GetComponent<BallPresenter>();
-			Model.SetBallInGrabRange(ball.Model, false);
-		}
-	}
+            BallPresenter ball = other.GetComponent<BallPresenter>();
+            if (ball == null || ball.Model == null) return;
+
+            Model.SetBallInGrabRange(ball.Model, false);
+        }
+    }
 }

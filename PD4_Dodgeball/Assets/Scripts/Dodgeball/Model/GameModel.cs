@@ -14,6 +14,9 @@ namespace Dodgeball.Model
 		public MatchModel CurrentMatch { get; private set; }
 		public SelectTeamModel TeamSelection { get; set; }
 
+		public Func<SelectTeamModel> TeamSelectionFactory { get; set; } =
+	() => new SelectTeamModel();
+
 		private float _countdownTimer;
 
 		public float CountDownTime
@@ -98,6 +101,23 @@ namespace Dodgeball.Model
 			_statesFSM.Update(deltaTime);
 		}
 
+        public void NotifyEnoughPlayersConnected()
+        {
+            if (_statesFSM.CurrentState == _statesFSM.WaitingForOtherPlayerState)
+            {
+                _statesFSM.TransitionTo(_statesFSM.SelectTeamState);
+            }
+        }
 
-	}
+        public void NotifyNetworkGameOver()
+        {
+            if (_statesFSM.CurrentState == _statesFSM.GameOverState)
+            {
+                return;
+            }
+
+            _statesFSM.TransitionTo(_statesFSM.GameOverState);
+        }
+
+    }
 }

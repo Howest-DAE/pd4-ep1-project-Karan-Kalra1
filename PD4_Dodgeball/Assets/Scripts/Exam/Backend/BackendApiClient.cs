@@ -10,7 +10,21 @@ public class BackendApiClient : MonoBehaviour
     [SerializeField]
     private string _baseUrl = "https://localhost:7042";
 
+    public static BackendApiClient Instance { get; private set; }
+
     public string BaseUrl => _baseUrl;
+
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+    }
 
     public Task<PlayerDto> UpsertPlayerAsync(string playFabId, string displayName)
     {

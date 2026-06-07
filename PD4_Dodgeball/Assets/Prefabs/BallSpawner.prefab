@@ -246,7 +246,7 @@ GameObject:
   - component: {fileID: 1480030525680913716}
   - component: {fileID: 948370437664699238}
   - component: {fileID: 2904061195364171733}
-  - component: {fileID: 7097219097912538960}
+  - component: {fileID: 2134969044841929937}
   m_Layer: 0
   m_Name: BallSpawner
   m_TagString: Untagged
@@ -352,7 +352,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &7097219097912538960
+--- !u!114 &2134969044841929937
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -361,12 +361,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 7844805342393884633}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5216c8d607531647af5cb53a5484d6c, type: 3}
+  m_Script: {fileID: 11500000, guid: bad8da5f416257d4ab3c91d51c45af0f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PD4.ShooterGame.Presenter.WeaponSpwawnerPresenter
-  _weaponPrefab: {fileID: 2110325744636175056, guid: c898634c7a114d64aaf1a07a6eab8aae, type: 3}
-  _spawnLocation: {fileID: 1750149978240303224}
-  _inactiveGlowMaterial: {fileID: 2100000, guid: 592f3d692ff7a484b86ec11f43a05121, type: 2}
-  _inactiveBaseMaterial: {fileID: 2100000, guid: fbebefa6a56fd5c47898fadaddcefbbd, type: 2}
-  _glowRenderer: {fileID: 948370437664699238}
-  _basePlateRenderer: {fileID: 49309697833877499}
+  m_EditorClassIdentifier: Assembly-CSharp::ExtraBallSpawnerTrigger
+  _spawnIndex: 0
+  _purchasePanel: {fileID: 0}

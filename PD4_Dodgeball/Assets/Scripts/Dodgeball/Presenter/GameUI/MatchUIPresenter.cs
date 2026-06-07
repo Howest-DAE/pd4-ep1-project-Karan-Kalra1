@@ -14,10 +14,28 @@ namespace Dodgeball.Presenter
 
 		private void OnEnable()
 		{
-			//find model
-			Model = _gamePresenter.Model.CurrentMatch;
+            if (_gamePresenter == null)
+            {
+                Debug.LogWarning("MatchUIPresenter: GamePresenter is not assigned.");
+                return;
+            }
 
-			UIDocument document = GetComponent<UIDocument>();
+            if (_gamePresenter.Model == null)
+            {
+                Debug.LogWarning("MatchUIPresenter: GamePresenter.Model is null.");
+                return;
+            }
+
+            if (_gamePresenter.Model.CurrentMatch == null)
+            {
+                Debug.LogWarning("MatchUIPresenter enabled before CurrentMatch exists. Disable MatchPanel at scene start.");
+                return;
+            }
+
+            Model = _gamePresenter.Model.CurrentMatch;
+
+
+            UIDocument document = GetComponent<UIDocument>();
 			_redScoreLabel = document.rootVisualElement.Q<Label>("RedScore");
 			_blueScoreLabel = document.rootVisualElement.Q<Label>("BlueScore");
 			_timerLabel = document.rootVisualElement.Q<Label>("Timer");

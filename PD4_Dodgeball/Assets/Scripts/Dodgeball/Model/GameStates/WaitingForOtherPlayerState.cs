@@ -1,37 +1,16 @@
 namespace Dodgeball.Model.GameStates
 {
-	public class WaitingForOtherPlayerState : BaseGameState
-	{
-		private float _timer;//TODO: remove timer
-		public WaitingForOtherPlayerState(GameStatesFSM fsm) : base(fsm)
-		{
-		}
+    public class WaitingForOtherPlayerState : BaseGameState
+    {
+        public WaitingForOtherPlayerState(GameStatesFSM fsm) : base(fsm)
+        {
+        }
 
-		public override void OnEnter()
-		{
-			base.OnEnter();
-
-			//TODO: detect when players join -> 
-			//When enough players are joined (2), go to the next state
-			//FSM.TransitionTo(FSM.SelectTeamState);
-
-			//FAKE waiting: wait 2 seconds
-			_timer = 2f;
-		}
-
-		public override void Update(float deltaTime)
-		{
-			base.Update(deltaTime);
-
-			//FAKE: wait 2 seconds before showing the Team selection.
-			_timer -= deltaTime;
-			if (_timer <= 0f)
-			{
-				FSM.TransitionTo(FSM.SelectTeamState);
-			}
-
-		}
-
-
-	}
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            // Real transition is now triggered by GameNetworkBridge
+            // when NetworkPlayerRegistry reports 2 connected players.
+        }
+    }
 }

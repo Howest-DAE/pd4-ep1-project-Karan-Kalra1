@@ -3,6 +3,7 @@ using MVP.Presenter;
 using System;
 using System.Collections.Generic;
 using UnityEngine.UIElements;
+using Unity.Netcode;
 
 namespace Dodgeball.Presenter
 {
@@ -19,9 +20,9 @@ namespace Dodgeball.Presenter
 
 		private Label _exceededLabel;
 
-		public ulong LocalPlayerId => 0;  //TESTING: local PlayerId = 0
+        public ulong LocalPlayerId => NetworkManager.Singleton.LocalClientId;  //TESTING: local PlayerId = 0
 
-		public SelectTeamPresenter(UIDocument document, SelectTeamModel model)
+        public SelectTeamPresenter(UIDocument document, SelectTeamModel model)
 		{
 			Model = model;
 			_document = document;
@@ -65,44 +66,41 @@ namespace Dodgeball.Presenter
 			_unreadyButton.clicked -= unreadyButton_Clicked;
 		}
 
-		#region UI_eventcallbacks
-		void readyButton_Clicked()
-		{
+        #region UI_eventcallbacks
+        void readyButton_Clicked()
+        {
+            NetworkPlayerRegistry.Instance?.RequestReady(true);
+        }
 
-			Model.SetReady(LocalPlayerId, true);
-		}
-		void unreadyButton_Clicked()
-		{
-			Model.SetReady(LocalPlayerId, false);
-		}
-		private void blueButton_clicked()
-		{
-			Model.SetSelection(LocalPlayerId, PlayerColor.Blue);
-		}
-		private void redButton_clicked()
-		{
-			Model.SetSelection(LocalPlayerId, PlayerColor.Red);
-		}
+        void unreadyButton_Clicked()
+        {
+            NetworkPlayerRegistry.Instance?.RequestReady(false);
+        }
 
-		#endregion
+        private void blueButton_clicked()
+        {
+            NetworkPlayerRegistry.Instance?.RequestSelectTeam((int)PlayerColor.Blue);
+        }
 
-		private void Model_ReadinessChanged(object sender, EventArgs e)
-		{
-			UpdateReadyButtonVisibility();
+        private void redButton_clicked()
+        {
+            NetworkPlayerRegistry.Instance?.RequestSelectTeam((int)PlayerColor.Red);
+        }
 
-		}
+        #endregion
 
-		private void Model_SelectionChanged(object sender, PlayerIdEventArgs e)
+        private void Model_ReadinessChanged(object sender, EventArgs e)
 		{
 			UpdateReadyButtonVisibility();
-			if (e.PlayerId == 0) // currentplayerID
-			{
-				//TESTING: when current player sets, automatically set the opposing player
-				AutoSetOpposingPlayer();
-			}
+
 		}
 
-		protected override void OnModelPropertyChanged(string propertyName)
+        private void Model_SelectionChanged(object sender, PlayerIdEventArgs e)
+        {
+            UpdateReadyButtonVisibility();
+        }
+
+        protected override void OnModelPropertyChanged(string propertyName)
 		{
 			switch (propertyName)
 			{

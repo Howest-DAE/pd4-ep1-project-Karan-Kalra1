@@ -1,4 +1,4 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/GameUI.uss?fileID=7433441132597879392&amp;guid=fb3c3173dd62712409dccdfcc1359b45&amp;type=3#GameUI" />
-    <ui:Label text="Game Over" enabled="true" name="Label" class="fullscreentext" style="position: absolute; align-self: center; align-content: center; bottom: 0; right: 0; top: 0; left: 0; font-size: 67px; height: 100%; background-color: rgba(0, 0, 0, 0.48);" />
+    <Style src="project://database/Assets/UI/GameUI.uss?fileID=7433441132597879392&amp;guid=fb3c3173dd62712409dccdfcc1359b45&amp;type=3#GameUI"/>
+    <ui:Label text="Game Over" enabled="true" name="Label" class="fullscreentext" style="position: absolute; align-self: center; align-content: center; bottom: 0; right: 0; top: 0; left: 0; font-size: 67px; height: 100%; background-color: rgba(0, 0, 0, 0.48); -unity-text-align: upper-center; padding-top: 20px;"/>
 </ui:UXML>

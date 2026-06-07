@@ -55,7 +55,30 @@ namespace Dodgeball.Model
 			_teamSelectionModels = new List<PlayerTeamSelectionModel>() { _player1Selection, _player2Selection };
 		}
 
-		public ulong GetPlayerIdForColor(PlayerColor playerColor)
+        public SelectTeamModel(ulong player1Id, ulong player2Id, ulong localPlayerId)
+        {
+            _player1Selection = new PlayerTeamSelectionModel(
+                player1Id,
+                isCurrentPlayer: player1Id == localPlayerId
+            );
+
+            _player2Selection = new PlayerTeamSelectionModel(
+                player2Id,
+                isCurrentPlayer: player2Id == localPlayerId
+            );
+
+            // Default visual split so the UI does not show both players as Blue before selection.
+            _player1Selection.SelectedColor = PlayerColor.Blue;
+            _player2Selection.SelectedColor = PlayerColor.Red;
+
+            _teamSelectionModels = new List<PlayerTeamSelectionModel>
+    {
+        _player1Selection,
+        _player2Selection
+    };
+        }
+
+        public ulong GetPlayerIdForColor(PlayerColor playerColor)
 		{
 			return _teamSelectionModels.FirstOrDefault(p => p.SelectedColor == playerColor)?.PlayerId ?? 0;
 		}
