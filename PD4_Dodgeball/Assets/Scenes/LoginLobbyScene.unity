@@ -1278,7 +1278,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98269e0aad8f19a4daad2d0d23b335c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BackendApiClient
-  _baseUrl: http://localhost:5051
+  _baseUrl: https://pd4-dodgeball-api-karan-gmb9eza5crdjeyd4.norwayeast-01.azurewebsites.net
 --- !u!1 &415968603
 GameObject:
   m_ObjectHideFlags: 0
