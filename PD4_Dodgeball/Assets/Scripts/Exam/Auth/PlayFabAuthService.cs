@@ -75,8 +75,8 @@ public class PlayFabAuthService : MonoBehaviour
             Password = password,
             DisplayName = displayName,
 
-            // We are registering with email + password.
-            // We do not want to force a separate username field.
+            //  registering with email + password.
+           
             RequireBothUsernameAndEmail = false
         };
 

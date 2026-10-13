@@ -123,6 +123,7 @@ public class GameOverBackendStatsPresenter : MonoBehaviour
             builder.AppendLine($"Role: {role}");
             builder.AppendLine($"Points scored: {player.pointsScored}");
             builder.AppendLine($"Times hit: {player.timesHit}");
+            builder.AppendLine($"Crowns remaining: {player.crownsRemaining}");
             builder.AppendLine();
         }
 

@@ -49,7 +49,7 @@ public class NetworkDisconnectHandler : NetworkBehaviour
             _gamePresenter = FindAnyObjectByType<GamePresenter>();
         }
 
-        // Case 1: We are the server/host and the remote client disconnected.
+        // We are the server/host and the remote client disconnected.
         if (IsServer && clientId != NetworkManager.ServerClientId)
         {
             Debug.Log($"Remote client {clientId} disconnected. Ending match.");
@@ -63,7 +63,7 @@ public class NetworkDisconnectHandler : NetworkBehaviour
             return;
         }
 
-        // Case 2: We are a client and the host/server disconnected.
+        // We are a client and the host/server disconnected.
         if (!IsServer && clientId == NetworkManager.ServerClientId)
         {
             Debug.LogWarning("Host disconnected. Leaving match.");

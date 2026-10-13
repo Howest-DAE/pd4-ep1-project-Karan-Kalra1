@@ -121,6 +121,14 @@ public class NetworkMatchState : NetworkBehaviour
                             hitPoint
                         );
 
+
+        NetworkPlayerAvatar victimAvatar = FindAvatarByClientId(victimClientId);
+
+        if (victimAvatar != null)
+        {
+            victimAvatar.RemoveCrownOnServer();
+        }
+
         if (NetworkMatchReporter.Instance != null)
         {
             NetworkMatchReporter.Instance.ReportHitOnServer(
@@ -226,5 +234,22 @@ public class NetworkMatchState : NetworkBehaviour
         }
 
         Debug.LogWarning($"Could not find PlayerPresenter for hit victim {victimClientId}.");
+    }
+
+
+    private NetworkPlayerAvatar FindAvatarByClientId(ulong clientId)
+    {
+        NetworkPlayerAvatar[] avatars =
+            FindObjectsByType<NetworkPlayerAvatar>(FindObjectsSortMode.None);
+
+        foreach (NetworkPlayerAvatar avatar in avatars)
+        {
+            if (avatar.PlayerClientId.Value == clientId)
+            {
+                return avatar;
+            }
+        }
+
+        return null;
     }
 }

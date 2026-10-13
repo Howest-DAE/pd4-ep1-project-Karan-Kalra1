@@ -43,6 +43,7 @@ public class MatchPlayerInfoDto
     public bool isHost;
     public int pointsScored;
     public int timesHit;
+    public int crownsRemaining;
 }
 
 [Serializable]

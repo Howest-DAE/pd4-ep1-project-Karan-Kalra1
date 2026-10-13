@@ -16,7 +16,6 @@ public class GameNetworkBridge : MonoBehaviour
     {
         _gameModel = _gamePresenter.Model;
 
-        // The model stays clean. It only receives a factory for creating the correct
         // SelectTeamModel with real network client IDs.
         _gameModel.TeamSelectionFactory = CreateNetworkTeamSelectionModel;
 

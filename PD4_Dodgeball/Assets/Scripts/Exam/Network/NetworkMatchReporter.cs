@@ -96,6 +96,11 @@ public class NetworkMatchReporter : NetworkBehaviour
 
             MatchId.Value = result.matchId;
 
+            MatchSummaryDto summary =
+               await BackendApiClient.Instance.GetMatchAsync(MatchId.Value);
+
+            ApplyCrownsFromBackendSummary(summary);
+
             Debug.Log($"Backend match created. MatchId={MatchId.Value}");
         }
         catch (Exception ex)
@@ -176,4 +181,79 @@ public class NetworkMatchReporter : NetworkBehaviour
             Debug.LogWarning($"Failed to report backend hit: {ex}");
         }
     }
+
+    private void ApplyCrownsFromBackendSummary(MatchSummaryDto summary)
+    {
+        if (!NetworkManager.Singleton.IsServer)
+        {
+            return;
+        }
+
+        if (summary == null || summary.players == null)
+        {
+            Debug.LogWarning("Cannot apply crowns: backend summary is empty.");
+            return;
+        }
+
+        foreach (MatchPlayerInfoDto playerStats in summary.players)
+        {
+            if (!TryGetClientIdByPlayFabId(playerStats.playFabId, out ulong clientId))
+            {
+                Debug.LogWarning($"Could not find client for PlayFabId {playerStats.playFabId}");
+                continue;
+            }
+
+            NetworkPlayerAvatar avatar = FindAvatarByClientId(clientId);
+
+            if (avatar == null)
+            {
+                Debug.LogWarning($"Could not find avatar for ClientId {clientId}");
+                continue;
+            }
+
+            avatar.SetCrownsOnServer(playerStats.crownsRemaining);
+        }
+    }
+
+    private bool TryGetClientIdByPlayFabId(string playFabId, out ulong clientId)
+    {
+        clientId = 0;
+
+        NetworkPlayerRegistry registry = NetworkPlayerRegistry.Instance;
+
+        if (registry == null)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < registry.PlayerCount; i++)
+        {
+            NetworkPlayerData playerData = registry.GetPlayerAt(i);
+
+            if (playerData.PlayFabId.ToString() == playFabId)
+            {
+                clientId = playerData.ClientId;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private NetworkPlayerAvatar FindAvatarByClientId(ulong clientId)
+    {
+        NetworkPlayerAvatar[] avatars =
+            FindObjectsByType<NetworkPlayerAvatar>(FindObjectsSortMode.None);
+
+        foreach (NetworkPlayerAvatar avatar in avatars)
+        {
+            if (avatar.PlayerClientId.Value == clientId)
+            {
+                return avatar;
+            }
+        }
+
+        return null;
+    }
+
 }

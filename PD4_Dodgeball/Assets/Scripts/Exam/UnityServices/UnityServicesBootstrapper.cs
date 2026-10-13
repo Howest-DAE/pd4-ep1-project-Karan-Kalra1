@@ -24,8 +24,8 @@ public class UnityServicesBootstrapper : MonoBehaviour
                 InitializationOptions options = new InitializationOptions();
 
 #if UNITY_EDITOR
-                // Multiplayer Play Mode can run multiple editor players.
-                // A unique profile avoids both editor instances fighting over the same UGS auth session.
+               
+                // A unique profile avoids both editor instances fighting over the same UGS auth session
                 string profileName = $"profile_{Guid.NewGuid():N}".Substring(0, 20);
                 options.SetProfile(profileName);
 #endif

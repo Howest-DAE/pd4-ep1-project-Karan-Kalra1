@@ -86,8 +86,7 @@ public class LoginScreenPresenter : MonoBehaviour
                 _nextPanelAfterLogin.SetActive(true);
             }
 
-            // ToDo
-            // await BackendApiClient.UpsertPlayerAsync(session.PlayFabId, session.DisplayName);
+           
         }
         catch (Exception ex)
         {

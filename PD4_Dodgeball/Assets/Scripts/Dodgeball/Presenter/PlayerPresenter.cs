@@ -39,8 +39,6 @@ namespace Dodgeball.Presenter
         {
             base.Awake();
 
-            // If this prefab has a NetworkObject, do not enable local AI by default.
-            // NetworkPlayerAvatar will initialize it after the NetworkVariables arrive.
             if (TryGetComponent<NetworkObject>(out _))
             {
                 DisableLocalControlScripts();

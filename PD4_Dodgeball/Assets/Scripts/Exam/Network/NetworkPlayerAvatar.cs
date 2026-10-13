@@ -19,6 +19,12 @@ public class NetworkPlayerAvatar : NetworkBehaviour
         NetworkVariableWritePermission.Server
     );
 
+    public NetworkVariable<int> CrownsRemaining = new(
+    0,
+    NetworkVariableReadPermission.Everyone,
+    NetworkVariableWritePermission.Server
+);
+
     private PlayerPresenter _playerPresenter;
 
     private void Awake()
@@ -114,4 +120,25 @@ public class NetworkPlayerAvatar : NetworkBehaviour
     {
         return PlayerClientId.Value == NetworkManager.ServerClientId;
     }
+
+    public void SetCrownsOnServer(int crowns)
+    {
+        if (!IsServer)
+        {
+            return;
+        }
+
+        CrownsRemaining.Value = Mathf.Max(0, crowns);
+    }
+
+    public void RemoveCrownOnServer()
+    {
+        if (!IsServer)
+        {
+            return;
+        }
+
+        CrownsRemaining.Value = Mathf.Max(0, CrownsRemaining.Value - 1);
+    }
+
 }

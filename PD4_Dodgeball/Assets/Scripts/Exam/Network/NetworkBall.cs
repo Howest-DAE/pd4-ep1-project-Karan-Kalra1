@@ -216,14 +216,14 @@ public class NetworkBall : NetworkBehaviour
             Vector3 hitPoint = collision.GetContact(0).point;
             TryRegisterPlayerHit(hitPlayer, hitPoint);
 
-            // Whether it was valid, self-hit, or same-team hit,
+            
             // after touching a player the ball is no longer an active scoring ball.
             IsActivePlayerBall.Value = false;
             return;
         }
 
-        // If the ball hits the floor, wall, obstacle, etc.,
-        // it missed the player and should become pickup-able again.
+        
+        // it missed the player and should become pickup-able again
         Debug.Log($"Ball hit environment/object '{collision.collider.name}', deactivating active ball.");
 
         IsActivePlayerBall.Value = false;

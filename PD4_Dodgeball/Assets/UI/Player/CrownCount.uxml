@@ -1,0 +1,3 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Label text="00" name="countTxt" style="position: absolute; bottom: 0; left: 0; top: 0; right: 0; font-size: 122px; color: rgb(255, 216, 0); -unity-text-align: middle-center; -unity-text-outline-color: rgb(0, 0, 0); text-shadow: 0 0 15.4px rgb(0, 0, 0); -unity-text-outline-width: 2px; -unity-font-style: bold;"/>
+</ui:UXML>
