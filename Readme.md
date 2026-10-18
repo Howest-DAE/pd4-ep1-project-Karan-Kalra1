@@ -236,9 +236,7 @@ count is match-specific and is reduced by the hit logic.
 
 `GET /Matches/{matchId}`
 
-The response contains the match and its player statistics. The exact
-JSON shape depends on the DTO returned by the current implementation,
-but it includes data Unity needs to show match results, such as player
+The response contains the match and its player statistics. it includes data Unity needs to show match results, such as player
 identities, points, and remaining crowns.
 
 ### How Unity communicates with the API
